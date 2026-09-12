@@ -1,0 +1,22 @@
+{
+  "seeds": 50,
+  "scenarios": [
+    "normal",
+    "heat",
+    "water_block",
+    "sensor_fault",
+    "fever",
+    "fever_hot",
+    "combined"
+  ],
+  "agents": [
+    "shadow_only",
+    "threshold",
+    "bounded_react",
+    "bounded_react_noverify",
+    "bounded_react_noforecast",
+    "full_info"
+  ],
+  "episodes": 2100,
+  "runtime_s": 293.3
+}

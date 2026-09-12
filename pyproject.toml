@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "calftwin-react"
+version = "0.2.0"
+description = "CalfTwin-ReAct: a state-coupled agent testbed for dairy-calf digital twins"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Jan Saro", email = "sarojanek@gmail.com"}]
+keywords = ["digital twin", "precision livestock farming", "ReAct agent", "dairy calf", "state estimation"]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+llm = ["openai>=1.40", "python-dotenv>=1.0"]
+dev = ["pytest>=7.4", "python-docx>=1.1"]
+
+[project.scripts]
+calftwin = "calftwin.cli:main"
+
+[tool.setuptools]
+packages = ["calftwin", "calftwin.agents"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]

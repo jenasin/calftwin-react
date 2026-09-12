@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+title: "CalfTwin-ReAct: A State-Coupled Agent Testbed for Dairy-Calf Digital Twins"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Saro
+    given-names: Jan
+license: MIT
+repository-code: "https://github.com/jenasin/calftwin-react"
+abstract: >-
+  A closed-loop simulation testbed in which a digital twin of a dairy calf is
+  coupled to a hidden ground-truth physiological simulator through a faulty
+  sensor layer and a fallible command path, used to measure when a reasoning
+  agent improves on a digital shadow or a fixed-threshold controller. All data
+  are synthetic.
+keywords:
+  - digital twin
+  - precision livestock farming
+  - ReAct agent
+  - state estimation
+  - value of information
