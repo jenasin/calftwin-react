@@ -96,8 +96,11 @@ Reproduce every offline result:
 
 ```bash
 python scripts/run_experiments.py --seeds 50        # ~5 min, no API key needed
-python scripts/make_figures.py
+python scripts/make_figures.py                      # figures/ and docs/RESULTS.md
 ```
+
+A manuscript based on these results is in preparation and is not part of this
+repository.
 
 ---
 
