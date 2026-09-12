@@ -349,8 +349,10 @@ def fig_llm(llm: pd.DataFrame, ref: pd.DataFrame, path: Path) -> Path:
             ax.bar(x + i * width - 0.4 + width / 2, mu, width * 0.88, yerr=se,
                    color=col, label=lab, edgecolor=SURFACE, linewidth=0.8,
                    capsize=1.5, error_kw={"lw": 0.8, "ecolor": INK2})
-        ax.set_xticks(x, [SCEN_LABEL[s] for s in scen], rotation=20, ha="right")
+        ax.set_xticks(x, [SCEN_LABEL[s] for s in scen], rotation=42, ha="right",
+                      fontsize=7.4)
         ax.set_ylabel("Welfare burden" if j == 0 else "Total score")
-    axes[0].legend(loc="upper left", ncol=2, fontsize=7.2, handlelength=1.2,
+    axes[0].legend(loc="upper left", ncol=2, fontsize=7.0, handlelength=1.2,
                    columnspacing=0.9)
+    fig.tight_layout()
     return _save(fig, path)
