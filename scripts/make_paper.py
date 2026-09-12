@@ -186,11 +186,11 @@ def build_blocks(D):
        "is available as an explicit tool with an explicit cost, so the agent's willingness to buy "
        "information can be measured rather than assumed."))
     A(("p",
-       "Our contribution is threefold: an open, reproducible testbed that separates the data path "
-       "from the command path; a like-for-like comparison of monitoring, threshold control, a "
-       "bounded reasoning agent, its ablations and language-model agents on identical scenarios; "
-       "and a quantitative, conditional answer about when the reasoning layer pays. We do not "
-       "claim a validated digital twin of a real calf, and we report where the architecture fails."))
+       "We contribute an open, reproducible testbed separating the data path from the command "
+       "path; a like-for-like comparison of monitoring, threshold control, a bounded reasoning "
+       "agent, its ablations and language-model agents on identical scenarios; and a quantitative, "
+       "conditional answer about when the reasoning layer pays. We do not claim a validated twin "
+       "of a real calf, and we report where the architecture fails."))
 
     # ---------------- 2 Related work ----------------
     A(("h1", "2. Related work and the research gap"))
@@ -229,9 +229,9 @@ def build_blocks(D):
     # ---------------- 3 Testbed ----------------
     A(("h1", "3. The CalfTwin-ReAct testbed"))
     A(("fig", FIG / "fig1_architecture.png",
-       "Figure 1: Testbed architecture. The blue path carries data from the animal to the twin; "
-       "the orange path returns approved commands to the pen; the green dashed path is a priced "
-       "information purchase. The agent has no access to the hidden state or to future weather.", 13.0))
+       "Figure 1: Testbed architecture. Blue carries data from animal to twin, orange returns "
+       "approved commands, green dashed is a priced information purchase. The agent sees neither "
+       "the hidden state nor future weather.", 13.0))
     A(("h2", "3.1 Simulated animal"))
     A(("p",
        "The ground truth is a discrete-time biophysical model of a 42-day-old, 65 kg dairy calf "
@@ -260,23 +260,23 @@ def build_blocks(D):
        "as a stable calf, and zero trough flow means either a blocked trough or a calf that is not "
        "thirsty."))
     A(("p",
-       "The digital shadow owns identity, ordering and data quality, and performs no inference. It "
+       "The digital shadow owns identity, ordering and data quality and performs no inference. It "
        "rejects duplicate and out-of-order records, counts gaps, and raises per-channel flags for "
        "missing values, range violations, implausible rates of change and frozen values, the last "
-       "defined as six or more identical consecutive samples. Separating this layer from the "
-       "estimator means an experiment can attribute a failure to the data path or to inference."))
+       "defined as six identical consecutive samples. Separating it from the estimator lets an "
+       "experiment attribute a failure to the data path or to inference."))
     A(("h2", "3.3 State estimation"))
     A(("p",
        "The twin maintains a bootstrap particle filter over a five-dimensional latent vector, the "
        "four physiological states plus respiration rate, with 400 particles and systematic "
-       "resampling when the effective sample size falls below half. Its internal dynamics "
-       "deliberately differ from the ground truth in conductance, metabolic and gain constants and "
-       "omit the radiant term, so the twin suffers structural model mismatch as any deployed twin "
-       "does. Observations that the shadow has flagged as suspect are excluded rather than "
-       "trusted, and the measurement likelihood is a mixture of a Gaussian and a broad component "
-       "so that spikes cannot capture the filter. Because fever onset is a regime change rather "
-       "than a random walk, a small fraction of particles receives a large pyrogen perturbation "
-       "each step, which allows the filter to follow a step change instead of crawling towards it."))
+       "resampling below half the effective sample size. Its internal dynamics deliberately differ "
+       "from the ground truth in conductance, metabolic and gain constants and omit the radiant "
+       "term, so the twin suffers model mismatch as any deployed twin does. Observations the "
+       "shadow has flagged as suspect are excluded rather than trusted, and the likelihood is a "
+       "mixture of a Gaussian and a broad component so that spikes cannot capture the filter. "
+       "Because fever onset is a regime change rather than a random walk, a small fraction of "
+       "particles receives a large pyrogen perturbation each step, letting the filter follow a "
+       "step change instead of crawling towards it."))
     A(("p",
        "Two modelling decisions proved decisive and are worth reporting because both were "
        "initially wrong. First, the twin's belief that the trough is functional must be derived "
@@ -289,14 +289,13 @@ def build_blocks(D):
        "penalises exactly the dehydrated hypotheses that a blockage produces."))
     A(("h2", "3.4 The return path"))
     A(("p",
-       "The allowed action set is deliberately small: observe, engage cooling, disengage cooling, "
-       "request trough maintenance, and flag a stockperson check. No treatment or dosing is "
-       "implemented. A proposal is not an intervention. Every command passes an approval gate that "
-       "can decline it, waits out a 30-minute execution latency, and can fail at execution. Each "
-       "carries an identifier so that the resulting change in the animal and the subsequent "
-       "observation remain traceable. Flagging a check starts a simulated clinical response that "
-       "clears pyrogen over several hours; in a real deployment this is the point at which a "
-       "human, not the agent, acts."))
+       "The action set is deliberately small: observe, engage cooling, disengage cooling, request "
+       "trough maintenance, and flag a stockperson check. No treatment or dosing is implemented. A "
+       "proposal is not an intervention: every command passes an approval gate that can decline "
+       "it, waits out a 30-minute latency, can fail at execution, and carries an identifier so "
+       "that the resulting change in the animal and the subsequent observation remain traceable. "
+       "Flagging a check starts a simulated clinical response that clears pyrogen over several "
+       "hours; in a real deployment this is where a human, not the agent, acts."))
     A(("h2", "3.5 Agents"))
     A(("p",
        "Six configurations share the tool surface. The shadow estimates and never acts. The "
@@ -369,15 +368,14 @@ def build_blocks(D):
        f"(RMSE {e5.loc[1600, 'rmse_core_c']:.3f}). Per-scenario estimation statistics are "
        f"tabulated in the repository."))
     A(("fig", FIG / "fig2_day_trace.png",
-       "Figure 2: One closed-loop day in the combined scenario. Shaded spans mark active cooling; "
-       "triangles mark purchased verifications; vertical lines mark executed commands. The twin "
-       "tracks core temperature through a frozen ear tag, infers the trough blockage from the "
-       "water-balance residual, and acts on it.", 10.8))
+       "Figure 2: One closed-loop day in the combined scenario. Shading marks active cooling, "
+       "triangles purchased verifications, vertical lines executed commands. The twin tracks core "
+       "temperature through a frozen ear tag and infers the trough blockage.", 10.8))
     A(("h2", "5.2 Closing the loop dominates; how you close it matters more under ambiguity"))
     A(("p",
-       f"Monitoring alone is expensive in animal terms. Against the shadow, every acting "
-       f"configuration reduces burden substantially on every stressed scenario. The interesting "
-       f"comparison is between controllers. The bounded agent reduces burden relative to the "
+       f"Monitoring alone is expensive in animal terms: every acting configuration reduces burden "
+       f"substantially against the shadow on every stressed scenario. The interesting comparison "
+       f"is between controllers. The bounded agent reduces burden relative to the "
        f"threshold controller by {red['heat']:.0f} per cent under heat ({fmt_p(pv['heat'])}), "
        f"{red['water_block']:.0f} per cent under water deprivation ({fmt_p(pv['water_block'])}), "
        f"{red['sensor_fault']:.0f} per cent under sensor faults ({fmt_p(pv['sensor_fault'])}) and "
@@ -410,10 +408,9 @@ def build_blocks(D):
     A(("table", piv(e1, "total_score"),
        "Table 2: Mean total score, that is burden plus intervention and information cost.", False))
     A(("fig", FIG / "fig3_main_comparison.png",
-       "Figure 3: Main comparison. Panel (a) shows welfare burden for all configurations, where "
-       "the no-action shadow dominates the range. Panel (b) drops the shadow and shows total score "
-       "for the acting controllers only, so that differences between them are legible. Error bars "
-       "are standard errors over seeds.", 13.5))
+       "Figure 3: Main comparison. Panel (a) is welfare burden for all configurations, where the "
+       "no-action shadow dominates the range; panel (b) drops the shadow and shows total score for "
+       "the acting controllers, so their differences are legible. Error bars are standard errors.", 13.5))
     A(("h2", "5.3 Verification has a price, and it is often above the market"))
     A(("p",
        f"The value-of-information rule is the component we expected to matter most, and the result "
@@ -453,8 +450,8 @@ def build_blocks(D):
        f"practice, and weakest in the well-instrumented pens where such systems are usually "
        f"demonstrated."))
     A(("fig", FIG / "fig5_noise.png",
-       "Figure 5: Welfare burden against a multiplier on all sensor noise standard deviations. The "
-       "gap between the agent with and without verification widens as data quality falls.", 14.5))
+       "Figure 5: Welfare burden against a multiplier on all sensor noise standard deviations. "
+       "The verification gap widens as data quality falls.", 14.5))
     A(("h2", "5.4 The command path degrades the controllers unequally"))
     A(("p",
        f"Lengthening the delay between decision and effect from zero to two hours raises the "
@@ -478,9 +475,9 @@ def build_blocks(D):
     # ---------------- 6 Discussion ----------------
     A(("h1", "6. Discussion"))
     A(("p",
-       "Three findings seem to us to generalise beyond this simulator. First, the dominant term is "
-       "not reasoning but coupling: almost all of the available improvement comes from having any "
-       "closed loop at all, and the shadow-to-twin distinction is therefore worth defending as "
+       "Three findings seem to generalise beyond this simulator. First, the dominant term is not "
+       "reasoning but coupling: almost all the available improvement comes from having any closed "
+       "loop at all, so the shadow-to-twin distinction is worth defending as "
        "more than terminology. Second, the reasoning layer earns its place where the mapping from "
        "signal to correct action is not one-to-one: in the febrile scenarios two states produce "
        "the same alarm and demand opposite responses, and no threshold on the observed channel can "
@@ -492,10 +489,9 @@ def build_blocks(D):
        "For practitioners the operational implication is a triage rule rather than a blanket "
        "recommendation: run the cheap controller by default, and escalate to the reasoning layer "
        "when the estimator's uncertainty is both high and decision-relevant, when channels are "
-       "flagged, or when the installation's sensor quality is known to be poor. The break-even "
-       "prices we report are properties of this simulator and its weighting, but the existence of "
-       "a break-even price, and the fact that it varies several-fold with the kind of fault, is "
-       "the transferable result."))
+       "flagged, or when sensor quality is known to be poor. The break-even prices we report are "
+       "properties of this simulator and its weighting, but the existence of a break-even price, "
+       "and its several-fold variation with the kind of fault, is the transferable result."))
 
     # ---------------- 7 Limitations ----------------
     A(("h1", "7. Limitations and validation status"))
@@ -510,8 +506,8 @@ def build_blocks(D):
        "constants and omitting terms, so our mismatch is parametric where a deployed twin would "
        "face a deeper structural one. Only one animal and one day are modelled; herd effects, "
        "individual variation, growth and longer disease progression are out of scope. The "
-       "language-model results are a small single-provider sample and should be read as a "
-       "feasibility demonstration, not a ranking of models."))
+       "language-model grid is small, single-provider and incomplete, and is a feasibility "
+       "demonstration rather than a ranking."))
 
     # ---------------- 8 Conclusion ----------------
     A(("h1", "8. Conclusion"))
@@ -522,21 +518,19 @@ def build_blocks(D):
        f"welfare burden by roughly {min(red[s] for s in ['heat', 'water_block', 'fever', 'fever_hot', 'combined']):.0f} "
        f"to {max(red.values()):.0f} per cent against a fixed-threshold controller on every stressed "
        f"scenario, with the clearest advantage where an elevated temperature was ambiguous between "
-       f"environmental load and fever. Buying confirmatory measurements, by contrast, was worth "
-       f"its price only under compound faults and degraded sensing, with a break-even price "
-       f"varying by roughly a factor of four across scenarios. The practical conclusion is neither "
-       f"that agents are unnecessary nor that they are generally beneficial, but that their value "
-       f"is conditional and measurable, and that a testbed of this kind is what makes it "
-       f"measurable. Extending the rig towards biological calibration and prospective validation "
-       f"against instrumented animals is the necessary next step before any claim about real "
-       f"welfare can be made."))
+       f"environmental load and fever. Buying confirmatory measurements was worth its price only "
+       f"under compound faults and degraded sensing, with a break-even price varying roughly "
+       f"fourfold across scenarios. The conclusion is neither that agents are unnecessary nor that "
+       f"they are generally beneficial, but that their value is conditional and measurable, and "
+       f"that a testbed of this kind is what makes it measurable. Biological calibration and "
+       f"prospective validation against instrumented animals remain the necessary next step before "
+       f"any claim about real welfare."))
 
     # ---------------- declarations ----------------
     A(("h1", "Code and data availability"))
     A(("code_avail",
        "The testbed, the experiment scripts and the committed outputs of every run reported here "
-       "are at https://github.com/jenasin/calftwin-react under the MIT licence. Offline results "
-       "are deterministic given the reported seeds."))
+       "are at https://github.com/jenasin/calftwin-react under the MIT licence."))
 
     A(("h1", "Ethics declaration"))
     A(("p",
@@ -594,63 +588,92 @@ def build_blocks(D):
 def llm_blocks(D):
     """Section 5.5, only if language-model runs exist."""
     llm, e1, bud = D["llm"], D["e1"], D["budget"]
-    if bud is None and llm is not None and not llm.empty:
-        # budget.json is only written when the whole grid finishes; fall back to
-        # the per-episode token counts so a partial run still reports honestly.
-        bud = {"in_tokens": int(llm.get("llm_in_tokens", pd.Series([0])).sum()),
-               "out_tokens": int(llm.get("llm_out_tokens", pd.Series([0])).sum()),
-               "calls": int(llm.get("llm_tool_calls", pd.Series([0])).sum()),
-               "est_cost_usd": float("nan")}
     if llm is None or llm.empty:
         return [("h2", "5.5 Language-model agents"),
                 ("p", "The language-model orchestration is implemented and tested, but no live "
                       "runs are reported here; the offline results above are therefore not "
                       "presented as language-model results.")]
-    g = llm.groupby("model")
+    if bud is None:
+        bud = {"in_tokens": int(llm.get("llm_in_tokens", pd.Series([0])).sum()),
+               "out_tokens": int(llm.get("llm_out_tokens", pd.Series([0])).sum()),
+               "est_cost_usd": float("nan")}
+
+    models = sorted(set(llm["model"]))
+    sets = [set(llm[llm.model == m]["scenario"]) for m in models]
+    common = sorted(set.intersection(*sets), key=lambda x: SCEN.index(x))
+    missing = sorted(set(SCEN) - set(common))
+    sub_c = llm[llm.scenario.isin(common)]
+    ref_c = e1[(e1.agent == "bounded_react") & (e1.scenario.isin(common))]
+    thr_c = e1[(e1.agent == "threshold") & (e1.scenario.isin(common))]
+
     rows = []
-    for model, sub in g:
-        scens = sorted(set(sub.scenario))
-        ref = e1[(e1.agent == "bounded_react") & (e1.scenario.isin(scens))]
-        thr = e1[(e1.agent == "threshold") & (e1.scenario.isin(scens))]
-        rows.append({
-            "Model": model, "Days": len(sub),
-            "Burden": round(sub.burden.mean(), 2),
-            "Total": round(sub.total_score.mean(), 2),
-            "Bounded agent, same scenarios": round(ref.burden.mean(), 2),
-            "Threshold, same scenarios": round(thr.burden.mean(), 2),
-            "Tool calls/day": round(sub.get("llm_tool_calls", pd.Series([np.nan])).mean(), 1),
-            "Verifications/day": round(sub.n_verify.mean(), 2),
-            "Tokens in/day": int(sub.get("llm_in_tokens", pd.Series([0])).mean()),
-        })
-    tab = pd.DataFrame(rows).set_index("Model")
-    best = tab["Burden"].idxmin()
+    for m in models:
+        x = sub_c[sub_c.model == m]
+        rows.append({"Configuration": m, "Days": len(x),
+                     "Burden": round(x.burden.mean(), 2),
+                     "Total": round(x.total_score.mean(), 2),
+                     "Verifications/day": round(x.n_verify.mean(), 2),
+                     "Call-outs/day": round(x.n_human_check.mean(), 2),
+                     "Tool calls/day": round(x.get("llm_tool_calls", pd.Series([np.nan])).mean(), 0)})
+    rows.append({"Configuration": "Bounded ReAct agent", "Days": len(ref_c),
+                 "Burden": round(ref_c.burden.mean(), 2),
+                 "Total": round(ref_c.total_score.mean(), 2),
+                 "Verifications/day": round(ref_c.n_verify.mean(), 2),
+                 "Call-outs/day": round(ref_c.n_human_check.mean(), 2),
+                 "Tool calls/day": np.nan})
+    rows.append({"Configuration": "Threshold controller", "Days": len(thr_c),
+                 "Burden": round(thr_c.burden.mean(), 2),
+                 "Total": round(thr_c.total_score.mean(), 2),
+                 "Verifications/day": 0.0,
+                 "Call-outs/day": round(thr_c.n_human_check.mean(), 2),
+                 "Tool calls/day": np.nan})
+    tab = pd.DataFrame(rows).set_index("Configuration")
+
+    burden_list = " and ".join(f"{tab.loc[m, 'Burden']:.2f}" for m in models)
     text = (
-        f"Three commercial language models drove the identical tool surface over "
-        f"{len(llm)} simulated days, deciding hourly. The orchestration works: the models "
-        f"call tools, read the returned state, and commit commands, and qualitatively they make "
-        f"the diagnostic distinction the testbed is built around, engaging cooling when the "
+        f"Commercial language models drove the identical tool surface, deciding hourly. The run "
+        f"was cut short when the API account's credit was exhausted, so the grid is unbalanced: "
+        f"{len(llm)} episodes completed in total, and the two models share only the "
+        f"{len(common)} scenarios reported here ({', '.join(SCEN_L[s].lower() for s in common)}). "
+        f"The hardest two, {' and '.join(SCEN_L[s].lower() for s in missing)}, completed for one "
+        f"model only and are excluded: averaging over an unbalanced grid would flatter whichever "
+        f"model never reached them. On the shared scenarios the orchestration works and "
+        f"the models make the diagnostic distinction the testbed is built around, cooling when the "
         f"microclimate explains an elevated temperature and requesting a stockperson when it does "
-        f"not. Quantitatively they do not reach the bounded controller. Averaged over the "
-        f"scenarios each model ran, the best language-model configuration ({best}) achieved a "
-        f"burden of {tab.loc[best, 'Burden']:.2f} against "
-        f"{tab.loc[best, 'Bounded agent, same scenarios']:.2f} for the bounded agent on the same "
-        f"scenarios, while remaining well ahead of the threshold controller's "
-        f"{tab.loc[best, 'Threshold, same scenarios']:.2f}. "
-        f"Total measured usage was {bud['in_tokens']:,} input and {bud['out_tokens']:,} output "
-        f"tokens, an estimated {bud['est_cost_usd']:.2f} US dollars at the rates listed at the "
-        f"time of the runs. We report token counts as the primary figure because monetary values "
-        f"are rate-dependent. Two caveats bound these results: the sample is small "
-        f"and single-provider, and the bounded controller's policy was developed against this "
-        f"simulator whereas the models saw it only through the prompt, so the comparison favours "
-        f"the former. The defensible conclusion is that a language model can close this loop "
-        f"competently at a per-day cost that is not negligible, not that it is the right decision "
-        f"layer for it.")
-    return [("h2", "5.5 Language-model agents"), ("p", text),
-            ("table", tab, "Table 3: Language-model agents against the offline controllers on the "
-                           "scenarios each model ran.", True),
+        f"not. Neither reaches the bounded controller, and on this sample the two are "
+        f"indistinguishable from each other: burden {burden_list} "
+        f"for {' and '.join(models)} respectively, against "
+        f"{tab.loc['Bounded ReAct agent', 'Burden']:.2f} for the bounded agent, while both remain "
+        f"well ahead of the threshold controller's "
+        f"{tab.loc['Threshold controller', 'Burden']:.2f}. Measured usage was "
+        f"{bud['in_tokens']:,} input and {bud['out_tokens']:,} output tokens, an estimated "
+        f"{bud['est_cost_usd']:.2f} US dollars at the rates listed at the time of the runs; we "
+        f"report tokens as the primary figure because monetary values are rate-dependent.")
+
+    behav = (
+        f"The behavioural differences are more informative than the score. Verification use splits "
+        f"by model: " + " and ".join(
+            f"{m} {sub_c[sub_c.model == m].n_verify.mean():.2f}" for m in models) +
+        f" confirmatory measurements per day, against "
+        f"{tab.loc['Bounded ReAct agent', 'Verifications/day']:.2f} for the bounded agent, so the "
+        f"models largely ignore the one tool that costs them something. In the other direction "
+        f"they over-escalate, issuing {sub_c.n_human_check.mean():.2f} stockperson call-outs per "
+        f"day against {tab.loc['Bounded ReAct agent', 'Call-outs/day']:.2f}. The transcripts show "
+        f"why: in the ambiguous fever scenarios the models reach the correct "
+        f"diagnosis, switching from cooling to a clinical request once cooling stops reducing "
+        f"forecast strain, but then re-issue that request at successive epochs while the first is "
+        f"still in flight, despite an explicit instruction not to. The failure is procedural, not "
+        f"diagnostic: the agent reasons well about the animal and poorly about its own outstanding "
+        f"commands. No epoch ended without a command and no invalid action was proposed, so the "
+        f"orchestration is robust; a deployment would need command idempotency, a property of the "
+        f"interface rather than of the model. Two caveats bound this: the sample is small and "
+        f"single-provider, and the bounded controller's policy was developed against this "
+        f"simulator whereas the models saw it only through the prompt.")
+
+    return [("h2", "5.5 Language-model agents"), ("p", text), ("p", behav),
             ("fig", FIG / "fig6_llm.png",
-             "Figure 6: Language-model agents compared with the threshold controller and the "
-             "bounded agent. Error bars are standard errors over episodes.", 13.0)]
+             "Figure 6: Language-model agents against the threshold controller and the bounded "
+             "agent, on the five scenarios both models completed.", 13.0)]
 
 
 # ---------------------------------------------------------------------------
@@ -671,6 +694,15 @@ def style_doc(doc: Document) -> None:
 def render_docx(blocks, path: Path, anonymous: bool) -> int:
     doc = Document()
     style_doc(doc)
+    # Document metadata carries author identity independently of the visible text,
+    # so it has to be cleared for the double-blind copy.
+    cp = doc.core_properties
+    cp.title = "CalfTwin-ReAct: A State-Coupled Agent Testbed for Dairy-Calf Digital Twins"
+    cp.author = "" if anonymous else "Jan Saro"
+    cp.last_modified_by = cp.author
+    cp.comments = ""
+    cp.category = ""
+    cp.keywords = "digital twin; precision livestock farming; ReAct agent"
     words = 0
 
     def count(t):
@@ -718,8 +750,7 @@ def render_docx(blocks, path: Path, anonymous: bool) -> int:
             if kind == "code_avail" and anonymous:
                 txt = ("The complete testbed, the experiment scripts and the committed outputs of "
                        "every run reported here are in a public repository under the MIT licence; "
-                       "the URL is withheld for double-blind review. Offline results are "
-                       "deterministic given the reported seeds.")
+                       "the URL is withheld for double-blind review.")
             doc.add_paragraph(txt)
             count(txt)
         elif kind == "ref":
@@ -761,7 +792,10 @@ def render_docx(blocks, path: Path, anonymous: bool) -> int:
                 cells = t.add_row().cells
                 cells[0].text = str(idx)
                 for j, v in enumerate(row):
-                    cells[j + 1].text = f"{v:g}" if isinstance(v, (int, float, np.floating)) else str(v)
+                    if isinstance(v, (int, float, np.floating)):
+                        cells[j + 1].text = "\u2014" if pd.isna(v) else f"{v:g}"
+                    else:
+                        cells[j + 1].text = str(v)
                 for cell in cells:
                     for par in cell.paragraphs:
                         for run in par.runs:
@@ -793,7 +827,7 @@ def render_md(blocks, path: Path) -> None:
             rel = Path("..") / b[1]
             out.append(f"\n![{b[2]}]({rel})\n\n*{b[2]}*\n")
         elif k == "table":
-            out.append(f"\n*{b[2]}*\n\n{b[1].to_markdown()}\n")
+            out.append(f"\n*{b[2]}*\n\n{b[1].fillna('—').to_markdown()}\n")
     path.write_text("\n".join(out))
 
 

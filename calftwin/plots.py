@@ -325,28 +325,45 @@ def fig_noise_sensitivity(e2: pd.DataFrame, path: Path) -> Path:
 # ===========================================================================
 # Figure 6 -- language-model agents
 # ===========================================================================
-def fig_llm(llm: pd.DataFrame, ref: pd.DataFrame, path: Path) -> Path:
+def fig_llm(llm: pd.DataFrame, ref: pd.DataFrame, path: Path,
+            scenarios: list[str] | None = None) -> Path:
+    """Compare language-model agents with the offline controllers.
+
+    Only scenarios every model completed are plotted: an unbalanced grid would
+    let a model that never reached the hard scenarios look better than one that
+    did.
+    """
     apply_style()
-    scen = sorted(set(llm["scenario"]), key=lambda s: list(SCEN_LABEL).index(s))
     models = sorted(set(llm["agent"]))
-    baselines = [a for a in ["threshold", "bounded_react"] if a in set(ref["agent"])]
-    labels = [AGENT_LABEL[a] for a in baselines] + [m.split("[")[-1].rstrip("]") for m in models]
-    colors = [AGENT_STYLE[a][0] for a in baselines] + SERIES[3:3 + len(models)]
+    if scenarios is None:
+        sets = [set(llm[llm["agent"] == m]["scenario"]) for m in models]
+        scenarios = sorted(set.intersection(*sets), key=lambda s: list(SCEN_LABEL).index(s))
+    scen = scenarios
+    llm = llm[llm["scenario"].isin(scen)]
+    # Bar order is threshold, the models, then the bounded agent, so that the two
+    # reference controllers bracket the models and no two adjacent bars share a
+    # hue pair that fails the palette's separation check.
+    model_colors = [SERIES[2], SERIES[3], SERIES[5]]
+    series = ([("threshold", AGENT_LABEL["threshold"], AGENT_STYLE["threshold"][0], "ref")]
+              + [(m, m.split("[")[-1].rstrip("]"), model_colors[k % len(model_colors)], "llm")
+                 for k, m in enumerate(models)]
+              + [("bounded_react", AGENT_LABEL["bounded_react"],
+                  AGENT_STYLE["bounded_react"][0], "ref")])
 
     fig, axes = plt.subplots(1, 2, figsize=(6.9, 3.0))
     x = np.arange(len(scen))
-    width = 0.8 / len(labels)
-    for j, (src, key) in enumerate([(None, "burden"), (None, "total_score")]):
+    width = 0.82 / len(series)
+    for j, key in enumerate(["burden", "total_score"]):
         ax = axes[j]
-        for i, (lab, col) in enumerate(zip(labels, colors)):
-            if i < len(baselines):
-                sub = ref[(ref["agent"] == baselines[i]) & (ref["scenario"].isin(scen))]
+        for i, (name, lab, col, kind) in enumerate(series):
+            if kind == "ref":
+                sub = ref[(ref["agent"] == name) & (ref["scenario"].isin(scen))]
             else:
-                sub = llm[llm["agent"] == models[i - len(baselines)]]
+                sub = llm[llm["agent"] == name]
             g = sub.groupby("scenario")[key].agg(["mean", "sem"])
             mu = [g.loc[s, "mean"] if s in g.index else np.nan for s in scen]
             se = [g.loc[s, "sem"] if s in g.index else np.nan for s in scen]
-            ax.bar(x + i * width - 0.4 + width / 2, mu, width * 0.88, yerr=se,
+            ax.bar(x + i * width - 0.41 + width / 2, mu, width * 0.86, yerr=se,
                    color=col, label=lab, edgecolor=SURFACE, linewidth=0.8,
                    capsize=1.5, error_kw={"lw": 0.8, "ecolor": INK2})
         ax.set_xticks(x, [SCEN_LABEL[s] for s in scen], rotation=42, ha="right",

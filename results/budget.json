@@ -1,0 +1,33 @@
+{
+  "calls": 2169,
+  "in_tokens": 3518701,
+  "out_tokens": 174657,
+  "est_cost_usd": 1.5383,
+  "prices_usd_per_mtok": {
+    "gpt-4.1": [
+      2.0,
+      8.0
+    ],
+    "gpt-4.1-mini": [
+      0.4,
+      1.6
+    ],
+    "gpt-4o": [
+      2.5,
+      10.0
+    ],
+    "gpt-4o-mini": [
+      0.15,
+      0.6
+    ],
+    "gpt-5": [
+      1.25,
+      10.0
+    ],
+    "gpt-5-mini": [
+      0.25,
+      2.0
+    ]
+  },
+  "decide_every": 4
+}
